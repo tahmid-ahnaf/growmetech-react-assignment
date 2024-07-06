@@ -1,10 +1,10 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import { Button } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import { Button } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import MenuOpenIcon from "@mui/icons-material/MenuOpen";
 
 interface Department {
   department: string;
@@ -26,42 +26,67 @@ const departmentsData: Department[] = [
   },
 ];
 
-
-
 export default function Component2() {
-  const [departmentState, setDepartmentState] = React.useState<DepartmentState>({});
+  const [departmentState, setDepartmentState] = React.useState<DepartmentState>(
+    {}
+  );
 
-  const handleDepartmentChange = (department: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    const subDepartments = departmentsData.find(d => d.department === department)?.sub_departments || [];
-    setDepartmentState(prevState => ({
+  const handleDepartmentChange = (
+    department: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const subDepartments =
+      departmentsData.find((d) => d.department === department)
+        ?.sub_departments || [];
+    setDepartmentState((prevState) => ({
       ...prevState,
-      ...subDepartments.reduce((acc, sub) => ({
-        ...acc,
-        [`${department}-${sub}`]: event.target.checked,
-      }), {}),
+      ...subDepartments.reduce(
+        (acc, sub) => ({
+          ...acc,
+          [`${department}-${sub}`]: event.target.checked,
+        }),
+        {}
+      ),
       [department]: event.target.checked,
     }));
   };
 
-  const handleSubDepartmentChange = (department: string, subDepartment: string, event: React.ChangeEvent<HTMLInputElement>) => {
-    setDepartmentState(prevState => ({
+  const handleSubDepartmentChange = (
+    department: string,
+    subDepartment: string,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setDepartmentState((prevState) => ({
       ...prevState,
       [`${department}-${subDepartment}`]: event.target.checked,
     }));
   };
 
   const isDepartmentChecked = (department: string): boolean => {
-    const subDepartments = departmentsData.find(d => d.department === department)?.sub_departments || [];
-    return subDepartments.every(sub => departmentState[`${department}-${sub}`]);
+    const subDepartments =
+      departmentsData.find((d) => d.department === department)
+        ?.sub_departments || [];
+    return subDepartments.every(
+      (sub) => departmentState[`${department}-${sub}`]
+    );
   };
 
   const isDepartmentIndeterminate = (department: string): boolean => {
-    const subDepartments = departmentsData.find(d => d.department === department)?.sub_departments || [];
-    const checkedSubDepartments = subDepartments.filter(sub => departmentState[`${department}-${sub}`]);
-    return checkedSubDepartments.length > 0 && checkedSubDepartments.length < subDepartments.length;
+    const subDepartments =
+      departmentsData.find((d) => d.department === department)
+        ?.sub_departments || [];
+    const checkedSubDepartments = subDepartments.filter(
+      (sub) => departmentState[`${department}-${sub}`]
+    );
+    return (
+      checkedSubDepartments.length > 0 &&
+      checkedSubDepartments.length < subDepartments.length
+    );
   };
 
-  const [departmentOpenStates, setDepartmentOpenStates] = React.useState<Record<string, boolean>>({});
+  const [departmentOpenStates, setDepartmentOpenStates] = React.useState<
+    Record<string, boolean>
+  >({});
 
   const toggleVisibility = (department: string) => () => {
     setDepartmentOpenStates((prevStates) => ({
@@ -74,11 +99,13 @@ export default function Component2() {
     <div>
       {departmentsData.map(({ department, sub_departments }) => (
         <Box key={department} sx={{ mb: 2 }}>
-          <Button onClick={toggleVisibility(department)}>{
-
-departmentOpenStates[department] ? <MenuIcon></MenuIcon> : <MenuOpenIcon></MenuOpenIcon>
-
-            }</Button>
+          <Button onClick={toggleVisibility(department)}>
+            {departmentOpenStates[department] ? (
+              <MenuIcon></MenuIcon>
+            ) : (
+              <MenuOpenIcon></MenuOpenIcon>
+            )}
+          </Button>
           <FormControlLabel
             label={department}
             control={
@@ -89,23 +116,32 @@ departmentOpenStates[department] ? <MenuIcon></MenuIcon> : <MenuOpenIcon></MenuO
               />
             }
           />
-          {
-            departmentOpenStates[department] ? <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-            {sub_departments.map(subDepartment => (
-              <FormControlLabel
-                key={subDepartment}
-                label={subDepartment}
-                control={
-                  <Checkbox
-                    checked={!!departmentState[`${department}-${subDepartment}`]}
-                    onChange={(event) => handleSubDepartmentChange(department, subDepartment, event)}
-                  />
-                }
-              />
-            ))}
-          </Box> : ""
-          }
-          
+          {departmentOpenStates[department] ? (
+            <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+              {sub_departments.map((subDepartment) => (
+                <FormControlLabel
+                  key={subDepartment}
+                  label={subDepartment}
+                  control={
+                    <Checkbox
+                      checked={
+                        !!departmentState[`${department}-${subDepartment}`]
+                      }
+                      onChange={(event) =>
+                        handleSubDepartmentChange(
+                          department,
+                          subDepartment,
+                          event
+                        )
+                      }
+                    />
+                  }
+                />
+              ))}
+            </Box>
+          ) : (
+            ""
+          )}
         </Box>
       ))}
     </div>

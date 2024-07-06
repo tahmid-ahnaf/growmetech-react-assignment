@@ -1,8 +1,8 @@
 
 import { useState, useEffect } from 'react';
-import {Post} from "../../Post.ts";
 import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
+import { Post } from '../../Post';
 
 
 const Component1 = () => {

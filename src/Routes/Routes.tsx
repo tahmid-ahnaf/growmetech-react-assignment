@@ -5,6 +5,7 @@ import {
 import FirstPage from "../pages/FirstPage/FirstPage.tsx"
 import Main from "../layout/Main.tsx";
 import SecondPage from "../pages/SecondPage/SecondPage.tsx";
+import PrivateRoutes from "../PrivateRoutes/PrivateRoutes.tsx";
 
 
 
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
 
       {
         path: '/second',
-        element: <SecondPage></SecondPage>
+        element: <PrivateRoutes><SecondPage></SecondPage></PrivateRoutes>
     },
 
       
